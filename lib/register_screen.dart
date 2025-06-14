@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:march25batch6pm/utils/const.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -13,6 +15,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool langEnglish = false;
   bool langGujarati = false;
   bool langHindi = false;
+  String selectedBirthdate = "";
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   List<String> cityNamesListObject = [
@@ -52,6 +55,37 @@ class _RegisterScreenState extends State<RegisterScreen> {
         child: ListView(
           padding: const EdgeInsets.all(10),
           children: <Widget>[
+            // InkWell(
+            //   onTap: (){
+            //     print("On Tap Clicked");
+            //   },
+            //   onLongPress: (){
+            //     print("onLongPress Clicked");
+            //   },
+            //   onDoubleTap:  (){
+            //     print("onDoubleTap Clicked");
+            //   },
+            //   child: const CircleAvatar(
+            //     radius: 80,
+            //     backgroundImage: AssetImage(imgBirdImage),
+            //   ),
+            // ),
+            GestureDetector(
+              onTap: () {
+                print("On Tap Clicked");
+              },
+              onLongPress: () {
+                print("onLongPress Clicked");
+              },
+              onDoubleTap: () {
+                print("onDoubleTap Clicked");
+              },
+              child: const CircleAvatar(
+                radius: 80,
+                backgroundImage: AssetImage(imgBirdImage),
+              ),
+            ),
+            const SizedBox(height: 20),
             TextFormField(
               textInputAction: TextInputAction.next,
               validator: (value) {
@@ -140,6 +174,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
             //     ),
             //   ),
             // ),
+            const SizedBox(height: 20),
+            IntlPhoneField(
+              initialCountryCode: 'IN',
+              onChanged: (phone) {
+                print("------> ${phone.completeNumber}");
+              },
+              decoration: InputDecoration(
+                hintText: "Enter phone number",
+                prefixIcon: const Icon(Icons.numbers),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(35),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(35),
+                  borderSide: const BorderSide(
+                    color: Colors.red,
+                    width: 2,
+                  ),
+                ),
+              ),
+            ),
             const SizedBox(height: 20),
             TextFormField(
               textInputAction: TextInputAction.next,
@@ -334,10 +389,72 @@ class _RegisterScreenState extends State<RegisterScreen> {
               },
             ),
             const SizedBox(height: 20),
+            Row(
+              children: [
+                Text("Birthdate: $selectedBirthdate"),
+                IconButton(
+                  onPressed: () {
+                    // dynamic date = showDatePicker(
+                    //   initialDate: ,
+                    //   lastDate: ,
+                    //   firstDate: ,
+                    //   context: context,
+                    // );
+                  },
+                  icon: const Icon(Icons.calendar_month),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 if (formKey.currentState!.validate()) {
                   print('vndfkldfknb');
+                } else {
+                  if (selectedCity == null || selectedCity == "") {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: const Text("Please select city"),
+                        backgroundColor: Colors.red,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(35),
+                        ),
+                        behavior: SnackBarBehavior.floating,
+                        duration: const Duration(seconds: 5),
+                        // action: SnackBarAction(
+                        //   onPressed: (){},
+                        //   label: "Close",
+                        //   textColor: Colors.white,
+                        // ),
+                        dismissDirection: DismissDirection.none,
+                        showCloseIcon: true,
+                        closeIconColor: Colors.white,
+                        width: 150,
+                      ),
+                    );
+                  }
+                  else if(langEnglish == false){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: const Text("Please select English"),
+                        backgroundColor: Colors.red,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(35),
+                        ),
+                        behavior: SnackBarBehavior.floating,
+                        duration: const Duration(seconds: 5),
+                        // action: SnackBarAction(
+                        //   onPressed: (){},
+                        //   label: "Close",
+                        //   textColor: Colors.white,
+                        // ),
+                        dismissDirection: DismissDirection.none,
+                        showCloseIcon: true,
+                        closeIconColor: Colors.white,
+                        width: 150,
+                      ),
+                    );
+                  }
                 }
                 setState(() {});
               },
