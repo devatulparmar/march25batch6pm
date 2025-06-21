@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:march25batch6pm/utils/const.dart';
 
@@ -17,6 +20,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool langHindi = false;
   String selectedBirthdate = "";
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  XFile? selectedImage;
 
   List<String> cityNamesListObject = [
     "Vadodara",
@@ -43,6 +47,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
       child: Text("Bharuch"),
     ),
   ];
+
+  Future<void> _openCamera() async {
+    final imgPicker = ImagePicker();
+    final XFile? image = await imgPicker.pickImage(source: ImageSource.camera);
+    setState(() {
+      selectedImage = image;
+    });
+  }
+
+  Future<void> _openGallery() async {
+    final imgPicker = ImagePicker();
+    final XFile? image = await imgPicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      selectedImage = image;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,10 +100,37 @@ class _RegisterScreenState extends State<RegisterScreen> {
               onDoubleTap: () {
                 print("onDoubleTap Clicked");
               },
-              child: const CircleAvatar(
-                radius: 80,
-                backgroundImage: AssetImage(imgBirdImage),
-              ),
+              child: selectedImage != null
+                  ? CircleAvatar(
+                      radius: 100,
+                      backgroundImage: FileImage(File(selectedImage!.path)),
+                    )
+                  : const CircleAvatar(
+                      radius: 80,
+                      backgroundImage: AssetImage(imgBirdImage),
+                    ),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                FloatingActionButton(
+                  heroTag: "1",
+                  onPressed: () {
+                    _openCamera();
+                  },
+                  elevation: 0,
+                  child: const Icon(Icons.camera_alt),
+                ),
+                FloatingActionButton(
+                  heroTag: "2",
+                  onPressed: () {
+                    _openGallery();
+                  },
+                  elevation: 0,
+                  child: const Icon(Icons.photo),
+                ),
+              ],
             ),
             const SizedBox(height: 20),
             TextFormField(
@@ -432,8 +479,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         width: 150,
                       ),
                     );
-                  }
-                  else if(langEnglish == false){
+                  } else if (langEnglish == false) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: const Text("Please select English"),
