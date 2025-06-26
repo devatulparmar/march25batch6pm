@@ -64,6 +64,47 @@ class _RegisterScreenState extends State<RegisterScreen> {
     });
   }
 
+  Future<void> _openOptions() async {
+    showModalBottomSheet(
+      context: context,
+      isDismissible: true,
+      enableDrag: true,
+      barrierColor: Colors.black.withOpacity(0.5),
+      builder: (BuildContext context) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 100),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                FloatingActionButton(
+                  heroTag: "1",
+                  onPressed: () {
+                    _openCamera();
+                    Navigator.pop(context);
+                  },
+                  elevation: 0,
+                  child: const Icon(Icons.camera_alt),
+                ),
+                FloatingActionButton(
+                  heroTag: "2",
+                  onPressed: () {
+                    _openGallery();
+                    Navigator.pop(context);
+                  },
+                  elevation: 0,
+                  child: const Icon(Icons.photo),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,6 +134,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             GestureDetector(
               onTap: () {
                 print("On Tap Clicked");
+                _openOptions();
               },
               onLongPress: () {
                 print("onLongPress Clicked");
@@ -109,28 +151,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       radius: 80,
                       backgroundImage: AssetImage(imgBirdImage),
                     ),
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                FloatingActionButton(
-                  heroTag: "1",
-                  onPressed: () {
-                    _openCamera();
-                  },
-                  elevation: 0,
-                  child: const Icon(Icons.camera_alt),
-                ),
-                FloatingActionButton(
-                  heroTag: "2",
-                  onPressed: () {
-                    _openGallery();
-                  },
-                  elevation: 0,
-                  child: const Icon(Icons.photo),
-                ),
-              ],
             ),
             const SizedBox(height: 20),
             TextFormField(

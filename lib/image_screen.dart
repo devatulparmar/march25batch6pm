@@ -26,26 +26,44 @@ class _ImageScreenState extends State<ImageScreen> {
       ),
       body: Column(
         children: [
-          SizedBox(
-            height: 150,
-            width: 150,
-            child: Image(
-              image: const AssetImage(imgBirdImage),
-              fit: BoxFit.fill,
-              errorBuilder: (BuildContext context, Object obj, StackTrace? sT) {
-                return const Icon(
-                  Icons.image_not_supported,
-                  color: Colors.red,
-                  size: 100,
-                );
-              },
-            ),
+          Stack(
+            children: [
+              SizedBox(
+                height: 150,
+                width: 150,
+                child: Image(
+                  image: const AssetImage(imgBirdImage),
+                  fit: BoxFit.fill,
+                  errorBuilder:
+                      (BuildContext context, Object obj, StackTrace? sT) {
+                    return const Icon(
+                      Icons.image_not_supported,
+                      color: Colors.red,
+                      size: 100,
+                    );
+                  },
+                ),
+              ),
+              const Text(
+                "Bird Image",
+                style: TextStyle(color: Colors.red, fontSize: 25),
+              ),
+              const Positioned(
+                left: 40,
+                bottom: 30,
+                child: Text(
+                  "Hello",
+                  style: TextStyle(color: Colors.red, fontSize: 25),
+                ),
+              ),
+            ],
           ),
           SizedBox(
             height: 150,
             width: 150,
             child: Image(
-              image: const NetworkImage("https://static.remove.bg/sample-gallery/graphics/bird-thumbnail.jpg"),
+              image: const NetworkImage(
+                  "https://static.remove.bg/sample-gallery/graphics/bird-thumbnail.jpg"),
               fit: BoxFit.fill,
               errorBuilder: (BuildContext context, Object obj, StackTrace? sT) {
                 return const Icon(
@@ -67,8 +85,9 @@ class _ImageScreenState extends State<ImageScreen> {
               borderRadius: BorderRadius.circular(100),
               child: CachedNetworkImage(
                 fit: BoxFit.cover,
-                imageUrl: "https://sample-files.com/downloads/images/jpg/landscape_hires_4000x2667_6.83mb.jpg",
-                placeholder: (BuildContext context, String str){
+                imageUrl:
+                    "https://sample-files.com/downloads/images/jpg/landscape_hires_4000x2667_6.83mb.jpg",
+                placeholder: (BuildContext context, String str) {
                   return const SizedBox(
                     height: 150,
                     width: 150,
@@ -95,7 +114,7 @@ class _ImageScreenState extends State<ImageScreen> {
             foregroundImage: const CachedNetworkImageProvider(
               "https://.remove.bg/sample-gallery/graphics/bird-thumbnail.jpg",
             ),
-            onForegroundImageError:(Object obj, StackTrace? sT) {
+            onForegroundImageError: (Object obj, StackTrace? sT) {
               print("image error");
               const Icon(
                 Icons.image_not_supported,

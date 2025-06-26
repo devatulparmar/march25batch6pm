@@ -12,6 +12,71 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Future _simpleDialog() async {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const Dialog(
+          child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: ListTile(
+                title: Text("Logout?"),
+                subtitle: Text("Are you sure?"),
+              )),
+        );
+      },
+    );
+  }
+
+  Future _logOut() async {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      useSafeArea: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Logout?"),
+          content: const Text("Are you sure?"),
+          scrollable: true,
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text("No"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, routeLoginScreen, (route) => false,);
+              },
+              child: const Text("Yes", style: TextStyle(color: Colors.green),),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future _aboutDialog() async {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      useSafeArea: true,
+      builder: (BuildContext context) {
+        return AboutDialog(
+          applicationIcon: Image.asset(imgBirdImage, height: 35,width: 35,),
+          applicationName: "Batch 6 PM",
+          applicationVersion: "1.0.0",
+          applicationLegalese: "applicationLegalese",
+          children: [
+            Text("Hello"),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -58,11 +123,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 selectedColor: Colors.white,
                 textColor: Colors.white,
                 iconColor: Colors.white,
-                onTap: (){
+                onTap: () {
                   print("Clicked");
                 },
               ),
-              const SizedBox(height: 5,),
+              const SizedBox(
+                height: 5,
+              ),
               ListTile(
                 leading: const Icon(Icons.home),
                 trailing: const Icon(Icons.arrow_forward_ios),
@@ -73,8 +140,42 @@ class _HomeScreenState extends State<HomeScreen> {
                 selectedColor: Colors.white,
                 textColor: Colors.white,
                 iconColor: Colors.white,
-                onTap: (){
+                onTap: () {
                   print("Clicked");
+                },
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              ListTile(
+                leading: const Icon(Icons.home),
+                trailing: const Icon(Icons.arrow_forward_ios),
+                title: const Text("About Us"),
+                tileColor: Colors.cyan,
+                selected: true,
+                selectedTileColor: Colors.green,
+                selectedColor: Colors.white,
+                textColor: Colors.white,
+                iconColor: Colors.white,
+                onTap: () {
+                  _aboutDialog();
+                },
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              ListTile(
+                leading: const Icon(Icons.home),
+                trailing: const Icon(Icons.arrow_forward_ios),
+                title: const Text("Logout"),
+                tileColor: Colors.cyan,
+                selected: true,
+                selectedTileColor: Colors.green,
+                selectedColor: Colors.white,
+                textColor: Colors.white,
+                iconColor: Colors.white,
+                onTap: () {
+                  _logOut();
                 },
               ),
             ],
