@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:march25batch6pm/utils/const.dart';
 
@@ -103,6 +104,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
         );
       },
     );
+  }
+
+  Future<void> _selectBirthdate() async {
+    DateTime currentDate = DateTime.now();
+    int birthYear = currentDate.year - 18;
+
+    DateTime? date = await showDatePicker(
+      context: context,
+      initialDate: DateTime(birthYear, currentDate.month, currentDate.day),
+      firstDate: DateTime(1950),
+      lastDate: DateTime(birthYear, currentDate.month, currentDate.day),
+      initialEntryMode: DatePickerEntryMode.calendarOnly,
+    );
+    DateTime selectedDate = date ?? DateTime.now();
+    var format = DateFormat("d-M-yy");
+    var dateString = format.format(selectedDate);
+
+    selectedBirthdate = dateString;
+    setState(() {});
   }
 
   @override
@@ -461,12 +481,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Text("Birthdate: $selectedBirthdate"),
                 IconButton(
                   onPressed: () {
-                    // dynamic date = showDatePicker(
-                    //   initialDate: ,
-                    //   lastDate: ,
-                    //   firstDate: ,
-                    //   context: context,
-                    // );
+                    _selectBirthdate();
                   },
                   icon: const Icon(Icons.calendar_month),
                 ),
