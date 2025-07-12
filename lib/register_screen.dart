@@ -22,6 +22,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String selectedBirthdate = "";
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   XFile? selectedImage;
+  TimeOfDay timeOfDay = TimeOfDay.now();
 
   List<String> cityNamesListObject = [
     "Vadodara",
@@ -122,6 +123,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
     var dateString = format.format(selectedDate);
 
     selectedBirthdate = dateString;
+    setState(() {});
+  }
+
+  Future<void> _selectTime() async {
+    TimeOfDay? selectedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+      initialEntryMode: TimePickerEntryMode.dialOnly,
+    );
+    timeOfDay = selectedTime ?? TimeOfDay.now();
     setState(() {});
   }
 
@@ -484,6 +495,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     _selectBirthdate();
                   },
                   icon: const Icon(Icons.calendar_month),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                Text("Time: ${timeOfDay.format(context)}"),
+                IconButton(
+                  onPressed: _selectTime,
+                  icon: const Icon(Icons.timer),
                 ),
               ],
             ),

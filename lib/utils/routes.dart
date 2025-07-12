@@ -1,3 +1,4 @@
+import 'package:march25batch6pm/bottom_nav_screen.dart';
 import 'package:march25batch6pm/home_screen.dart';
 import 'package:march25batch6pm/login_screen.dart';
 import 'package:march25batch6pm/register_screen.dart';
@@ -35,7 +36,7 @@ class MyRoutes {
     switch (settingObject.name) {
       case "/":
         return MaterialPageRoute(
-          builder: (BuildContext context) => const HomeScreen(),
+          builder: (BuildContext context) => const BottomNavScreen(),
         );
       case routeHomeScreen:
         return MaterialPageRoute(
