@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -11,6 +12,18 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isPasswordHidden = false;
   TextEditingController userController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  SharedPreferences? prefs;
+
+  Future _getPreference()async{
+    prefs = await SharedPreferences.getInstance();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getPreference();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,9 +84,10 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                print('clicked');
-                setState(() {});
+              onPressed: () async {
+                await prefs!.setBool("isLogin", true);
+
+                Navigator.pushNamedAndRemoveUntil(context, "/", (route) => false);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,

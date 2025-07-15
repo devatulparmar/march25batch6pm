@@ -81,4 +81,27 @@ class MyRoutes {
         );
     }
   }
+
+  static Route onNestedGenerate(RouteSettings settings){
+    late Widget widget;
+    switch(settings.name){
+      case "/":
+        widget = const HomeScreen();
+        break;
+      case routeRegisterScreen:
+        widget = const RegisterScreen();
+        break;
+        case routeLoginScreen:
+        widget = const LoginScreen();
+        break;
+      default:
+        widget = Scaffold(
+          appBar: AppBar(),
+          body: const Center(
+            child: Text("No route found!"),
+          ),
+        );
+    }
+    return MaterialPageRoute(builder: (_) => widget);
+  }
 }

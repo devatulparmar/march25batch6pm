@@ -3,6 +3,7 @@ import 'package:march25batch6pm/screen1.dart';
 import 'package:march25batch6pm/utils/const.dart';
 import 'package:march25batch6pm/utils/routes_const.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -48,9 +49,15 @@ class _HomeScreenState extends State<HomeScreen> {
             TextButton(
               onPressed: () {
                 Navigator.pushNamedAndRemoveUntil(
-                    context, routeLoginScreen, (route) => false,);
+                  context,
+                  routeLoginScreen,
+                  (route) => false,
+                );
               },
-              child: const Text("Yes", style: TextStyle(color: Colors.green),),
+              child: const Text(
+                "Yes",
+                style: TextStyle(color: Colors.green),
+              ),
             ),
           ],
         );
@@ -65,7 +72,11 @@ class _HomeScreenState extends State<HomeScreen> {
       useSafeArea: true,
       builder: (BuildContext context) {
         return AboutDialog(
-          applicationIcon: Image.asset(imgBirdImage, height: 35,width: 35,),
+          applicationIcon: Image.asset(
+            imgBirdImage,
+            height: 35,
+            width: 35,
+          ),
           applicationName: "Batch 6 PM",
           applicationVersion: "1.0.0",
           applicationLegalese: "applicationLegalese",
@@ -75,6 +86,21 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       },
     );
+  }
+
+  bool isLogin = false;
+  SharedPreferences? prefs;
+
+  Future _getPreference() async {
+    prefs = await SharedPreferences.getInstance();
+    isLogin = prefs?.getBool("isLogin") ?? false;
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getPreference();
   }
 
   @override
@@ -205,29 +231,47 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (BuildContext context) => const Screen1(),
-                //   ),
-                // );
+            isLogin
+                ? ElevatedButton(
+                    onPressed: () async {
+                     await prefs?.setBool("isLogin", false);
 
-                ///second method
-                Navigator.pushNamed(context, routeLoginScreen);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-              ),
-              child: const Text(
-                "Login Screen",
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
-                ),
-              ),
-            ),
+                     Navigator.pushNamedAndRemoveUntil(context, "/", (route) => false);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                    ),
+                    child: const Text(
+                      "Logout",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  )
+                : ElevatedButton(
+                    onPressed: () {
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (BuildContext context) => const Screen1(),
+                      //   ),
+                      // );
+
+                      ///second method
+                      Navigator.pushNamed(context, routeLoginScreen);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                    ),
+                    child: const Text(
+                      "Login Screen",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
             ElevatedButton(
               onPressed: () {
                 // Navigator.push(

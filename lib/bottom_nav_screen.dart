@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:march25batch6pm/home_screen.dart';
+import 'package:march25batch6pm/nested_nav_screen.dart';
 
 class BottomNavScreen extends StatefulWidget {
   const BottomNavScreen({Key? key}) : super(key: key);
@@ -12,7 +12,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
   int selectedIndex = 0;
 
   List<Widget> screensList = [
-    const HomeScreen(),
+    const NestedNavScreen(),
     Container(
       color: Colors.red,
     ),
