@@ -93,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future _getPreference() async {
     prefs = await SharedPreferences.getInstance();
-    isLogin = prefs?.getBool("isLogin") ?? false;
+    isLogin = prefs?.getBool(prefLogin) ?? false;
     setState(() {});
   }
 
