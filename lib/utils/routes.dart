@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:march25batch6pm/bottom_nav_screen.dart';
 import 'package:march25batch6pm/home_screen.dart';
+import 'package:march25batch6pm/listview_screen.dart';
 import 'package:march25batch6pm/login/login_bloc.dart';
 import 'package:march25batch6pm/login_screen.dart';
 import 'package:march25batch6pm/register_screen.dart';
@@ -13,7 +14,6 @@ import 'package:march25batch6pm/utils/routes_const.dart';
 import 'package:flutter/material.dart';
 
 class MyRoutes {
-
   final LoginBloc _loginPageBloc = LoginBloc();
   static Route onGenerate(RouteSettings settingObject) {
     // if (settingObject.name == routeHomeScreen) {
@@ -86,16 +86,19 @@ class MyRoutes {
     }
   }
 
-  Route onNestedGenerate(RouteSettings settings){
+  Route onNestedGenerate(RouteSettings settings) {
     late Widget widget;
-    switch(settings.name){
+    switch (settings.name) {
       case "/":
         widget = const HomeScreen();
         break;
       case routeRegisterScreen:
         widget = const RegisterScreen();
         break;
-        case routeLoginScreen:
+      case routeListviewScreen:
+        widget = const ListviewScreen();
+        break;
+      case routeLoginScreen:
         widget = BlocProvider<LoginBloc>.value(
           value: _loginPageBloc,
           child: const LoginScreen(),

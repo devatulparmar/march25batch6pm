@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class ListviewScreen extends StatefulWidget {
   const ListviewScreen({super.key});
@@ -18,11 +21,20 @@ class _ListviewScreenState extends State<ListviewScreen> {
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7L4FWGBOO27k7G_ePJb8usxrPDoo_aqGhWA&s",
   ];
 
+  Future _getData() async {
+    Uri uriLink = Uri.parse("https://jsonplaceholder.typicode.com/posts/1");
+    var result = await http.get(uriLink);
+    print(jsonDecode(result.body));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Listview Screen"),
+        actions: [
+          IconButton(onPressed: _getData, icon: const Icon(Icons.refresh),),
+        ],
       ),
       body: ListView.builder(
         itemCount: imagesList.length,

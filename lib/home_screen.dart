@@ -218,6 +218,21 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             ElevatedButton(
               onPressed: () {
+                Navigator.pushNamed(context, routeListviewScreen);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+              ),
+              child: const Text(
+                "ListView Screen",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
                 Navigator.pushNamed(context, routeRegisterScreen);
               },
               style: ElevatedButton.styleFrom(
