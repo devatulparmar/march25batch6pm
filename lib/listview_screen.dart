@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:march25batch6pm/model/user_list_model.dart';
+import 'package:march25batch6pm/utils/const.dart';
 
 class ListviewScreen extends StatefulWidget {
   const ListviewScreen({super.key});
@@ -21,10 +23,30 @@ class _ListviewScreenState extends State<ListviewScreen> {
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7L4FWGBOO27k7G_ePJb8usxrPDoo_aqGhWA&s",
   ];
 
+  List<UserModel> userList = [];
+  List _tempList = [];
+
   Future _getData() async {
-    Uri uriLink = Uri.parse("https://jsonplaceholder.typicode.com/posts/1");
+    Uri uriLink = Uri.parse("https://reqres.in/api/users?page=15");
     var result = await http.get(uriLink);
-    print(jsonDecode(result.body));
+    if (result.statusCode == successStatusCode) {
+      var decodedJsonData = jsonDecode(result.body);
+      _tempList = decodedJsonData["data"] as List;
+      userList = _tempList
+          .map((dynamic element) => UserModel.fromJson(element))
+          .toList();
+      setState(() {});
+      print(_tempList);
+    }
+    else if(result.statusCode == unauthorizedStatusCode){
+      /// show snack bar
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getData();
   }
 
   @override
@@ -32,51 +54,47 @@ class _ListviewScreenState extends State<ListviewScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Listview Screen"),
-        actions: [
-          IconButton(onPressed: _getData, icon: const Icon(Icons.refresh),),
-        ],
       ),
-      body: ListView.builder(
-        itemCount: imagesList.length,
-        itemBuilder: (BuildContext context, int index) {
-          return  Container(
-            padding: const EdgeInsets.all(15),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(15),
-              child: CachedNetworkImage(
-                fit: BoxFit.cover,
-                imageUrl: imagesList[index].toString(),
-                placeholder: (BuildContext context, String str){
-                  return   SizedBox(
-                    height: 250,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 30,
-                          width: 30,
-                          child: CircularProgressIndicator(
-                            color: Colors.green,
-                            strokeWidth: 5,
-                            backgroundColor: Colors.black,
-                          ),
+      body: userList.isNotEmpty
+          ? ListView.builder(
+              itemCount: userList.length,
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  padding: const EdgeInsets.all(15),
+                  margin: const EdgeInsets.only(bottom: 5),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey, width: 0.5),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: CachedNetworkImage(
+                          fit: BoxFit.cover,
+                          imageUrl: userList[index].userImage.toString(),
+                          placeholder: (BuildContext context, String str) {
+                            return CircularProgressIndicator(
+                              color: Colors.green,
+                              strokeWidth: 5,
+                              backgroundColor: Colors.black,
+                            );
+                          },
                         ),
-                      ],
-                    ),
-                  );
-                },
-                // errorWidget: (BuildContext context, String str, Object obj) {
-                //   return const Icon(
-                //     Icons.image_not_supported,
-                //     color: Colors.red,
-                //     size: 100,
-                //   );
-                // },
-              ),
+                      ),
+                      Text("User ID : ${userList[index].id}"),
+                      Text("Email : ${userList[index].email}"),
+                      Text("First Name : ${userList[index].firstName}"),
+                      Text("Last Name : ${userList[index].lastName}"),
+                    ],
+                  ),
+                );
+              },
+            )
+          : const Center(
+              child: Text("No data Found."),
             ),
-          );
-        },
-      ),
     );
   }
 }
