@@ -216,6 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
         body: ListView(
           padding: const EdgeInsets.all(15),
           children: [
+            Text("${prefs!.getString(prefLoginToken)}"),
             ElevatedButton(
               onPressed: () {
                 Navigator.pushNamed(context, routeListviewScreen);
