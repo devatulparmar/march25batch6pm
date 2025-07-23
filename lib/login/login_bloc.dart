@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:march25batch6pm/login/login_event.dart';
 import 'package:march25batch6pm/login/login_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,7 +14,8 @@ class LoginBloc extends Bloc<LoginEvents, LoginStates> {
       print("LoginInitState called");
     });
 
-    on<LoginButtonClickEvent>((event, emit) async => _login(event.email, event.password, emit));
+    on<LoginButtonClickEvent>(
+        (event, emit) async => _login(event.email, event.password, emit));
   }
 
   Future _login(String email, String password, emit) async {
@@ -40,5 +42,25 @@ class LoginBloc extends Bloc<LoginEvents, LoginStates> {
     } else {
       emit(LoginErrorState());
     }
+  }
+
+  Future _LoginWithDio(String email, String password, emit) async {
+    Dio dio = Dio();
+    FormData formData = FormData.fromMap({
+      "email": email,
+      "password": password,
+    });
+    Map<String, String> header = {
+      "x-api-key": "reqres-free-v1",
+    };
+    var result = await dio.post(
+      "https://reqres.in/api/login",
+      // data: formData,
+      options: Options(headers: header),
+      data: {
+        "email": email,
+        "password": password,
+      },
+    );
   }
 }
