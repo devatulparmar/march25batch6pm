@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:march25batch6pm/model/user_list_model.dart';
+import 'package:march25batch6pm/repository/api_repository.dart';
 import 'package:march25batch6pm/utils/const.dart';
 
 class ListviewScreen extends StatefulWidget {
@@ -30,11 +30,11 @@ class _ListviewScreenState extends State<ListviewScreen> {
 
   Future _getData() async {
     try {
-      Uri uriLink = Uri.parse("https://reqres.in/api/users?page=2");
       Map<String, String> header = {
         "x-api-key": "reqres-free-v1",
       };
-      var result = await http.get(uriLink, headers: header);
+      var result = await ApiRepository.getAPICall(
+          "https://reqres.in/api/users?page=2", header);
       debugPrint("statusCode = ${result.statusCode}");
       if (result.statusCode == successStatusCode) {
         var decodedJsonData = jsonDecode(result.body);

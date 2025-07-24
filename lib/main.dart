@@ -1,10 +1,12 @@
 import 'package:march25batch6pm/home_screen.dart';
 import 'package:march25batch6pm/utils/color_const.dart';
+import 'package:march25batch6pm/utils/const.dart';
 import 'package:march25batch6pm/utils/routes.dart';
 import 'package:flutter/material.dart';
 
 void main() {
   runApp(MaterialApp(
+    navigatorKey: mainKey,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         appBarTheme: const AppBarTheme(

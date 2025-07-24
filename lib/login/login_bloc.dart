@@ -2,10 +2,12 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:march25batch6pm/login/login_event.dart';
 import 'package:march25batch6pm/login/login_state.dart';
+import 'package:march25batch6pm/repository/api_repository.dart';
+import 'package:march25batch6pm/utils/common_snack_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 import '../utils/const.dart';
 
 class LoginBloc extends Bloc<LoginEvents, LoginStates> {
@@ -20,7 +22,6 @@ class LoginBloc extends Bloc<LoginEvents, LoginStates> {
 
   Future _login(String email, String password, emit) async {
     emit(LoginLoadingState());
-    Uri uriLink = Uri.parse("https://reqres.in/api/login");
     Map<String, String> header = {
       "x-api-key": "reqres-free-v1",
     };
@@ -32,12 +33,15 @@ class LoginBloc extends Bloc<LoginEvents, LoginStates> {
     //   "email": "eve.holt@reqres.in",
     //   "password": "cityslicka"
     // };
-    var result = await http.post(uriLink, headers: header, body: bodyData);
+    var result = await ApiRepository.postAPICall(
+        "https://reqres.in/api/login", header, bodyData);
     if (result.statusCode == successStatusCode) {
       var data = jsonDecode(result.body);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setBool(prefLogin, true);
       await prefs.setString(prefLoginToken, data["token"]);
+      CommonSnackBar.showMySnackBar(
+          message: "Login Success !", bgColor: Colors.green);
       emit(LoginSuccessState());
     } else {
       emit(LoginErrorState());
@@ -56,7 +60,15 @@ class LoginBloc extends Bloc<LoginEvents, LoginStates> {
     var result = await dio.post(
       "https://reqres.in/api/login",
       // data: formData,
-      options: Options(headers: header),
+      options: Options(
+        headers: header,
+        followRedirects: false,
+        receiveTimeout: const Duration(seconds: 5),
+        sendTimeout: const Duration(seconds: 3),
+        responseType: ResponseType.json,
+        preserveHeaderCase: true,
+        persistentConnection: true,
+      ),
       data: {
         "email": email,
         "password": password,
