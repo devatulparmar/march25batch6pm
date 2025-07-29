@@ -4,6 +4,7 @@ import 'package:march25batch6pm/utils/const.dart';
 import 'package:march25batch6pm/utils/routes_const.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -90,6 +91,51 @@ class _HomeScreenState extends State<HomeScreen> {
 
   bool isLogin = false;
   SharedPreferences? prefs;
+
+  final Uri _url = Uri.parse('https://www.google.com');
+
+  String? _encodeQueryParameters(Map<String, String> params) {
+    return params.entries
+        .map((MapEntry<String, String> element) =>
+            '${Uri.encodeComponent(element.key)}=${Uri.encodeComponent(element.value)}')
+        .join('&');
+  }
+
+  Future _launchEmailUs() async {
+    final Uri emailLaunchUri = Uri(
+      scheme: 'mailto',
+      path: 'smith@example.com',
+      query: _encodeQueryParameters(<String, String>{
+        'subject': 'Example Subject & Symbols are allowed!',
+        'body': 'Hello This is body section',
+      }),
+    );
+    launchUrl(emailLaunchUri);
+  }
+
+  Future _launchSMSUs() async {
+    final Uri smsLaunchUri = Uri(
+      scheme: 'sms',
+      path: '1234567890',
+      query: _encodeQueryParameters(<String, String>{
+        // 'subject': 'Example Subject & Symbols are allowed!',
+        'body': 'Hello This is body section',
+      }),
+    );
+    launchUrl(smsLaunchUri);
+  }
+
+  Future _launchDialerUs() async {
+    final Uri dialerLaunchUri = Uri(
+      scheme: 'tel',
+      path: '1234567890',
+      // query: _encodeQueryParameters(<String, String>{
+      //   // 'subject': 'Example Subject & Symbols are allowed!',
+      //   'body': 'Hello This is body section',
+      // }),
+    );
+    launchUrl(dialerLaunchUri);
+  }
 
   Future _getPreference() async {
     prefs = await SharedPreferences.getInstance();
@@ -217,6 +263,63 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.all(15),
           children: [
             ElevatedButton(
+              onPressed: _launchDialerUs,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+              ),
+              child: const Text(
+                "Call us",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: _launchSMSUs,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+              ),
+              child: const Text(
+                "SMS us",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: _launchEmailUs,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+              ),
+              child: const Text(
+                "Email us",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                if (!await launchUrl(_url,
+                    mode: LaunchMode.externalNonBrowserApplication)) {
+                  throw Exception('Could not launch $_url');
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+              ),
+              child: const Text(
+                "Privacy Policy",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            ElevatedButton(
               onPressed: () {
                 Navigator.pushNamed(context, routeListviewScreen);
               },
@@ -249,9 +352,10 @@ class _HomeScreenState extends State<HomeScreen> {
             isLogin
                 ? ElevatedButton(
                     onPressed: () async {
-                     await prefs?.setBool("isLogin", false);
+                      await prefs?.setBool("isLogin", false);
 
-                     Navigator.pushNamedAndRemoveUntil(context, "/", (route) => false);
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, "/", (route) => false);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,

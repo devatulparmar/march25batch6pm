@@ -53,5 +53,10 @@
     <string>This app wants you to access your Camera.</string>
     <key>NSMicrophoneUsageDescription</key>
     <string>This app wants you to access your Microphone.</string>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>sms</string>
+      <string>tel</string>
+    </array>
 </dict>
 </plist>
