@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:march25batch6pm/Stream_builder_screen.dart';
 import 'package:march25batch6pm/bottom_nav_screen.dart';
 import 'package:march25batch6pm/home_screen.dart';
 import 'package:march25batch6pm/listview_screen.dart';
@@ -11,6 +12,7 @@ import 'package:march25batch6pm/screen2.dart';
 import 'package:march25batch6pm/screen3.dart';
 import 'package:march25batch6pm/screen4.dart';
 import 'package:march25batch6pm/screen5.dart';
+import 'package:march25batch6pm/stream_example.dart';
 import 'package:march25batch6pm/utils/routes_const.dart';
 import 'package:flutter/material.dart';
 
@@ -98,6 +100,12 @@ class MyRoutes {
         break;
       case routeListviewScreen:
         widget = const ListviewScreen();
+        break;
+      case routeMyStreamScreen:
+        widget = const MyStreamScreen();
+        break;
+      case routeStreamBuilderScreen:
+        widget = const StreamBuilderScreen();
         break;
       case routeListviewSeparatedScreen:
         widget = const ListviewSeparatedScreen();

@@ -8,3 +8,5 @@ const String routeLoginScreen = "routeLoginScreen";
 const String routeRegisterScreen = "RegisterScreen";
 const String routeListviewScreen = "ListviewScreen";
 const String routeListviewSeparatedScreen = "ListviewSeparatedScreen";
+const String routeMyStreamScreen = "MyStreamScreen";
+const String routeStreamBuilderScreen = "StreamBuilderScreen";
