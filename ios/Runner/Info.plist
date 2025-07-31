@@ -58,5 +58,11 @@
       <string>sms</string>
       <string>tel</string>
     </array>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>App wants to access Location</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>App wants to access Location</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>App wants to access Location</string>
 </dict>
 </plist>

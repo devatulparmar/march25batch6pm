@@ -1,5 +1,7 @@
+import 'package:location/location.dart';
 import 'package:march25batch6pm/image_screen.dart';
 import 'package:march25batch6pm/screen1.dart';
+import 'package:march25batch6pm/services/fetch_location.dart';
 import 'package:march25batch6pm/utils/const.dart';
 import 'package:march25batch6pm/utils/routes_const.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.pushNamedAndRemoveUntil(
                   context,
                   routeLoginScreen,
-                  (route) => false,
+                      (route) => false,
                 );
               },
               child: const Text(
@@ -90,7 +92,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   bool isLogin = false;
+  bool isLoading = false;
   SharedPreferences? prefs;
+  late LocationData locationData;
 
   final Uri _url = Uri.parse('https://www.google.com');
 
@@ -143,6 +147,22 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {});
   }
 
+  Future _getCurrantLocation() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    var data = await FindMyLocation.getCurrantLocation();
+    setState(() {
+      locationData = data;
+    });
+    debugPrint("latitude: ${locationData.latitude}");
+    debugPrint("longitude: ${locationData.longitude}");
+    setState(() {
+      isLoading = false;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -156,9 +176,9 @@ class _HomeScreenState extends State<HomeScreen> {
         drawer: Drawer(
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
-            topRight: Radius.circular(35),
-            bottomRight: Radius.circular(35),
-          )),
+                topRight: Radius.circular(35),
+                bottomRight: Radius.circular(35),
+              )),
           child: ListView(
             children: [
               DrawerHeader(
@@ -259,116 +279,156 @@ class _HomeScreenState extends State<HomeScreen> {
           // ),
           title: const Text("Home"),
         ),
-        body: ListView(
-          padding: const EdgeInsets.all(15),
-          children: [
-            ElevatedButton(
-              onPressed: _launchDialerUs,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-              ),
-              child: const Text(
-                "Call us",
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: _launchSMSUs,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-              ),
-              child: const Text(
-                "SMS us",
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: _launchEmailUs,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-              ),
-              child: const Text(
-                "Email us",
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                if (!await launchUrl(_url,
-                    mode: LaunchMode.externalNonBrowserApplication)) {
-                  throw Exception('Could not launch $_url');
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-              ),
-              child: const Text(
-                "Privacy Policy",
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, routeListviewScreen);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-              ),
-              child: const Text(
-                "ListView Screen",
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, routeRegisterScreen);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-              ),
-              child: const Text(
-                "Register Screen",
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            isLogin
-                ? ElevatedButton(
-                    onPressed: () async {
-                      await prefs?.setBool("isLogin", false);
-
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, "/", (route) => false);
-                    },
+        body: isLoading
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : ListView(
+                padding: const EdgeInsets.all(15),
+                children: [
+                  ElevatedButton(
+                    onPressed: _getCurrantLocation,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
                     ),
                     child: const Text(
-                      "Logout",
+                      "Get Currant Location",
                       style: TextStyle(
                         fontSize: 20,
                         color: Colors.white,
                       ),
                     ),
-                  )
-                : ElevatedButton(
+                  ),
+                  ElevatedButton(
+                    onPressed: _launchDialerUs,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                    ),
+                    child: const Text(
+                      "Call us",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: _launchSMSUs,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                    ),
+                    child: const Text(
+                      "SMS us",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: _launchEmailUs,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                    ),
+                    child: const Text(
+                      "Email us",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      if (!await launchUrl(_url,
+                          mode: LaunchMode.externalNonBrowserApplication)) {
+                        throw Exception('Could not launch $_url');
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                    ),
+                    child: const Text(
+                      "Privacy Policy",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, routeListviewScreen);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                    ),
+                    child: const Text(
+                      "ListView Screen",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, routeRegisterScreen);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                    ),
+                    child: const Text(
+                      "Register Screen",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  isLogin
+                      ? ElevatedButton(
+                          onPressed: () async {
+                            await prefs?.setBool("isLogin", false);
+
+                            Navigator.pushNamedAndRemoveUntil(
+                                context, "/", (route) => false);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red,
+                          ),
+                          child: const Text(
+                            "Logout",
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                            ),
+                          ),
+                        )
+                      : ElevatedButton(
+                          onPressed: () {
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (BuildContext context) => const Screen1(),
+                            //   ),
+                            // );
+
+                            ///second method
+                            Navigator.pushNamed(context, routeLoginScreen);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red,
+                          ),
+                          child: const Text(
+                            "Login Screen",
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                  ElevatedButton(
                     onPressed: () {
                       // Navigator.push(
                       //   context,
@@ -378,64 +438,42 @@ class _HomeScreenState extends State<HomeScreen> {
                       // );
 
                       ///second method
-                      Navigator.pushNamed(context, routeLoginScreen);
+                      Navigator.pushNamed(context, routeScreen1);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
                     ),
                     child: const Text(
-                      "Login Screen",
+                      "Go to Screen 1",
                       style: TextStyle(
                         fontSize: 20,
                         color: Colors.white,
                       ),
                     ),
                   ),
-            ElevatedButton(
-              onPressed: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (BuildContext context) => const Screen1(),
-                //   ),
-                // );
-
-                ///second method
-                Navigator.pushNamed(context, routeScreen1);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-              ),
-              child: const Text(
-                "Go to Screen 1",
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => const ImageScreen(),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              const ImageScreen(),
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                    ),
+                    child: const Text(
+                      "Image Screen",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
+                ],
               ),
-              child: const Text(
-                "Image Screen",
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
