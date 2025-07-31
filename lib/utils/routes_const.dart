@@ -1,4 +1,3 @@
-
 const String routeHomeScreen = "routeHomeScreen";
 const String routeScreen1 = "routeScreen1";
 const String routeScreen2 = "routeScreen2";
@@ -8,3 +7,4 @@ const String routeScreen5 = "routeScreen5";
 const String routeLoginScreen = "routeLoginScreen";
 const String routeRegisterScreen = "RegisterScreen";
 const String routeListviewScreen = "ListviewScreen";
+const String routeListviewSeparatedScreen = "ListviewSeparatedScreen";

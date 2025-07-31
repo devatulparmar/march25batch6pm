@@ -358,6 +358,22 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () {
+                      Navigator.pushNamed(
+                          context, routeListviewSeparatedScreen);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                    ),
+                    child: const Text(
+                      "Infinite Scroll Screen",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
                       Navigator.pushNamed(context, routeListviewScreen);
                     },
                     style: ElevatedButton.styleFrom(

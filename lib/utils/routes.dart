@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:march25batch6pm/bottom_nav_screen.dart';
 import 'package:march25batch6pm/home_screen.dart';
 import 'package:march25batch6pm/listview_screen.dart';
+import 'package:march25batch6pm/listview_separated_screen.dart';
 import 'package:march25batch6pm/login/login_bloc.dart';
 import 'package:march25batch6pm/login_screen.dart';
 import 'package:march25batch6pm/register_screen.dart';
@@ -97,6 +98,9 @@ class MyRoutes {
         break;
       case routeListviewScreen:
         widget = const ListviewScreen();
+        break;
+      case routeListviewSeparatedScreen:
+        widget = const ListviewSeparatedScreen();
         break;
       case routeLoginScreen:
         widget = BlocProvider<LoginBloc>.value(
