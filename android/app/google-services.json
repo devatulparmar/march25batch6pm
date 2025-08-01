@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "484660889068",
+    "project_id": "march25batch6pm",
+    "storage_bucket": "march25batch6pm.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:484660889068:android:a5c857b03ed5099425acc9",
+        "android_client_info": {
+          "package_name": "com.example.march25batch6pm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAP6xObfIlIW5OeVmVAGOq-wnxvjOiOJYM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
