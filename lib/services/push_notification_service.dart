@@ -1,12 +1,21 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:march25batch6pm/services/notification_service.dart';
 
+@pragma('vm:entry-point')
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+}
+
 class PushNotificationService {
-  Future<void> setupInteractedMessage() async {
+  static Future<void> setupInteractedMessage() async {
     final messagingInstance = FirebaseMessaging.instance;
+
+    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
     NotificationSettings settings = await messagingInstance.requestPermission(
       alert: true,
@@ -41,7 +50,7 @@ class PushNotificationService {
 
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
         if (message.notification != null) {
-          NotificationService().showNotifications(
+          NotificationService.showNotifications(
             title: message.notification?.title,
             description: message.notification?.body,
             messageData: message.data,

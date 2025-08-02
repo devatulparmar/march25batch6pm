@@ -42,7 +42,7 @@ dependencies:
   shared_preferences: ^2.4.0
   bloc: ^7.2.0
   flutter_bloc: ^7.0.0
-  http: ^0.13.6
+  http: ^1.2.1
   dio: ^5.8.0+1
   url_launcher: ^6.3.2
   location: ^8.0.1
@@ -50,7 +50,7 @@ dependencies:
   infinite_scroll_pagination: ^5.1.0
   firebase_core: ^4.0.0
   firebase_messaging: ^16.0.0
-  flutter_local_notifications: ^18.0.1
+  flutter_local_notifications: ^19.4.0
 
 dev_dependencies:
   flutter_test:

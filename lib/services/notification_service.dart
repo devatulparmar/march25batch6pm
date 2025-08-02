@@ -48,7 +48,7 @@ class NotificationService {
 
   NotificationService._internal();
 
-  Future<void> init() async {
+  static Future<void> init() async {
     final darwinNotificationCategories = <DarwinNotificationCategory>[
       DarwinNotificationCategory(
         darwinNotificationCategoryText,
@@ -124,7 +124,7 @@ class NotificationService {
     );
   }
 
-  Future<void> isAndroidPermissionGranted() async {
+  static Future<void> isAndroidPermissionGranted() async {
     if (Platform.isAndroid) {
       await objLocalNotification
           .resolvePlatformSpecificImplementation<
@@ -133,7 +133,7 @@ class NotificationService {
     }
   }
 
-  Future<void> requestPermissions() async {
+  static Future<void> requestPermissions() async {
     if (Platform.isIOS) {
       await objLocalNotification
           .resolvePlatformSpecificImplementation<
@@ -161,18 +161,18 @@ class NotificationService {
     }
   }
 
-  configureDidReceiveLocalNotificationSubject() {
+  static configureDidReceiveLocalNotificationSubject() {
     didReceiveLocalNotificationStream.stream
         .listen((ReceivedNotification receivedNotification) async {});
   }
 
-  configureSelectNotificationSubject() {
+  static configureSelectNotificationSubject() {
     selectNotificationStream.stream.listen((dynamic payload) async {
       debugPrint('selectNotificationStream---> $payload');
     });
   }
 
-  Future<void> showNotifications(
+  static Future<void> showNotifications(
       {String? title,
       String? description,
       Map<String, dynamic>? messageData}) async {
