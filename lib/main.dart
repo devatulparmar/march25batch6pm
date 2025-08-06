@@ -8,17 +8,7 @@ import 'package:march25batch6pm/utils/const.dart';
 import 'package:march25batch6pm/utils/routes.dart';
 import 'package:flutter/material.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-
-  await NotificationService.init();
-  await NotificationService.isAndroidPermissionGranted();
-  await NotificationService.requestPermissions();
-  await NotificationService.configureDidReceiveLocalNotificationSubject();
-  await NotificationService.configureSelectNotificationSubject();
-  await PushNotificationService.setupInteractedMessage();
-
+void main() {
   runApp(
     MaterialApp(
       navigatorKey: mainKey,

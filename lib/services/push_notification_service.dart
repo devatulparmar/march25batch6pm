@@ -27,6 +27,8 @@ class PushNotificationService {
       sound: true,
     );
 
+    debugPrint(
+        "settings.authorizationStatus = ${settings.authorizationStatus}");
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       final token = await messagingInstance.getToken();
       debugPrint('FCM token :: $token');
@@ -61,6 +63,8 @@ class PushNotificationService {
       FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
         selectNotificationStream.add(jsonEncode(message.data));
       });
+    } else if (settings.authorizationStatus == AuthorizationStatus.denied) {
+      await NotificationService.requestPermissions();
     }
   }
 }
