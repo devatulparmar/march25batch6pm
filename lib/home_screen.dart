@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:location/location.dart';
 import 'package:march25batch6pm/image_screen.dart';
 import 'package:march25batch6pm/screen1.dart';
@@ -16,6 +18,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Key popScopeKey = UniqueKey(); // forces rebuild of PopScope
+
+  void _resetPopScope() {
+    setState(() {
+      popScopeKey = UniqueKey(); // rebuilds PopScope
+    });
+  }
+
   Future _simpleDialog() async {
     return showDialog(
       context: context,
@@ -54,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.pushNamedAndRemoveUntil(
                   context,
                   routeLoginScreen,
-                      (route) => false,
+                  (route) => false,
                 );
               },
               child: const Text(
@@ -84,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
           applicationVersion: "1.0.0",
           applicationLegalese: "applicationLegalese",
           children: [
-            Text("Hello"),
+            const Text("Hello"),
           ],
         );
       },
@@ -101,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String? _encodeQueryParameters(Map<String, String> params) {
     return params.entries
         .map((MapEntry<String, String> element) =>
-            '${Uri.encodeComponent(element.key)}=${Uri.encodeComponent(element.value)}')
+    '${Uri.encodeComponent(element.key)}=${Uri.encodeComponent(element.value)}')
         .join('&');
   }
 
@@ -163,6 +173,27 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  Future<bool> _onWillPopScope() async {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Confirm Exit'),
+        content: const Text('Are you sure you want to exit?'),
+        actions: [
+          TextButton(
+            onPressed: () => exit(0),
+            child: const Text('Yes'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('No'),
+          ),
+        ],
+      ),
+    );
+    return Future.value(false);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -171,14 +202,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return WillPopScope(
+      onWillPop: _onWillPopScope,
       child: Scaffold(
         drawer: Drawer(
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
-                topRight: Radius.circular(35),
-                bottomRight: Radius.circular(35),
-              )),
+            topRight: Radius.circular(35),
+            bottomRight: Radius.circular(35),
+          )),
           child: ListView(
             children: [
               DrawerHeader(
@@ -196,8 +228,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     end: Alignment.bottomRight,
                   ),
                 ),
-                child: Column(
-                  children: const [
+                child: const Column(
+                  children: [
                     CircleAvatar(
                       radius: 50,
                       backgroundImage: AssetImage(imgBirdImage),
@@ -281,245 +313,245 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         body: isLoading
             ? const Center(
-                child: CircularProgressIndicator(),
-              )
+          child: CircularProgressIndicator(),
+        )
             : ListView(
-                padding: const EdgeInsets.all(15),
-                children: [
-                  ElevatedButton(
-                    onPressed: _getCurrantLocation,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                    ),
-                    child: const Text(
-                      "Get Currant Location",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: _launchDialerUs,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                    ),
-                    child: const Text(
-                      "Call us",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: _launchSMSUs,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                    ),
-                    child: const Text(
-                      "SMS us",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: _launchEmailUs,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                    ),
-                    child: const Text(
-                      "Email us",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      if (!await launchUrl(_url,
-                          mode: LaunchMode.externalNonBrowserApplication)) {
-                        throw Exception('Could not launch $_url');
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                    ),
-                    child: const Text(
-                      "Privacy Policy",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(
-                          context, routeListviewSeparatedScreen);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                    ),
-                    child: const Text(
-                      "Infinite Scroll Screen",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, routeMyStreamScreen);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                    ),
-                    child: const Text(
-                      "Stream Screen",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, routeStreamBuilderScreen);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                    ),
-                    child: const Text(
-                      "Stream Builder Screen",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, routeListviewScreen);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                    ),
-                    child: const Text(
-                      "ListView Screen",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, routeRegisterScreen);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                    ),
-                    child: const Text(
-                      "Register Screen",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  isLogin
-                      ? ElevatedButton(
-                          onPressed: () async {
-                            await prefs?.setBool("isLogin", false);
-
-                            Navigator.pushNamedAndRemoveUntil(
-                                context, "/", (route) => false);
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red,
-                          ),
-                          child: const Text(
-                            "Logout",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.white,
-                            ),
-                          ),
-                        )
-                      : ElevatedButton(
-                          onPressed: () {
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (BuildContext context) => const Screen1(),
-                            //   ),
-                            // );
-
-                            ///second method
-                            Navigator.pushNamed(context, routeLoginScreen);
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red,
-                          ),
-                          child: const Text(
-                            "Login Screen",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (BuildContext context) => const Screen1(),
-                      //   ),
-                      // );
-
-                      ///second method
-                      Navigator.pushNamed(context, routeScreen1);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                    ),
-                    child: const Text(
-                      "Go to Screen 1",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              const ImageScreen(),
-                        ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                    ),
-                    child: const Text(
-                      "Image Screen",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
+          padding: const EdgeInsets.all(15),
+          children: [
+            ElevatedButton(
+              onPressed: _getCurrantLocation,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
               ),
+              child: const Text(
+                "Get Currant Location",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: _launchDialerUs,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+              ),
+              child: const Text(
+                "Call us",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: _launchSMSUs,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+              ),
+              child: const Text(
+                "SMS us",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: _launchEmailUs,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+              ),
+              child: const Text(
+                "Email us",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                if (!await launchUrl(_url,
+                    mode: LaunchMode.externalNonBrowserApplication)) {
+                  throw Exception('Could not launch $_url');
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+              ),
+              child: const Text(
+                "Privacy Policy",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(
+                    context, routeListviewSeparatedScreen);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+              ),
+              child: const Text(
+                "Infinite Scroll Screen",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, routeMyStreamScreen);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+              ),
+              child: const Text(
+                "Stream Screen",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, routeStreamBuilderScreen);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+              ),
+              child: const Text(
+                "Stream Builder Screen",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, routeListviewScreen);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+              ),
+              child: const Text(
+                "ListView Screen",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, routeRegisterScreen);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+              ),
+              child: const Text(
+                "Register Screen",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            isLogin
+                ? ElevatedButton(
+              onPressed: () async {
+                await prefs?.setBool("isLogin", false);
+
+                Navigator.pushNamedAndRemoveUntil(
+                    context, "/", (route) => false);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+              ),
+              child: const Text(
+                "Logout",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
+              ),
+            )
+                : ElevatedButton(
+              onPressed: () {
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (BuildContext context) => const Screen1(),
+                //   ),
+                // );
+
+                ///second method
+                Navigator.pushNamed(context, routeLoginScreen);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+              ),
+              child: const Text(
+                "Login Screen",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (BuildContext context) => const Screen1(),
+                //   ),
+                // );
+
+                ///second method
+                Navigator.pushNamed(context, routeScreen1);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+              ),
+              child: const Text(
+                "Go to Screen 1",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) =>
+                    const ImageScreen(),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+              ),
+              child: const Text(
+                "Image Screen",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
