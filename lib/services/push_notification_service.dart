@@ -30,8 +30,8 @@ class PushNotificationService {
     debugPrint(
         "settings.authorizationStatus = ${settings.authorizationStatus}");
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      final token = await messagingInstance.getToken();
-      debugPrint('FCM token :: $token');
+      final fcmToken = await messagingInstance.getToken();
+      debugPrint('FCM token :: $fcmToken');
 
       // messagingInstance.getInitialMessage().then((RemoteMessage? message) {
       //   print('getInitialMessage called');

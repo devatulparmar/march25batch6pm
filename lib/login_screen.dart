@@ -4,6 +4,8 @@ import 'package:march25batch6pm/login/login_bloc.dart';
 import 'package:march25batch6pm/login/login_event.dart';
 import 'package:march25batch6pm/login/login_state.dart';
 import 'package:march25batch6pm/utils/common_snack_bar.dart';
+import 'package:march25batch6pm/utils/const.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -14,9 +16,23 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool isPasswordHidden = false;
+  bool isGoogleLogin = false;
+  SharedPreferences? prefs;
   TextEditingController userController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  Future _getPreference() async {
+    prefs = await SharedPreferences.getInstance();
+    isGoogleLogin = prefs?.getBool(prefGoogleLogin) ?? false;
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getPreference();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -191,6 +207,32 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ],
               ),
+              const SizedBox(height: 20),
+              isGoogleLogin
+                  ? ElevatedButton(
+                      onPressed: () {
+                        BlocProvider.of<LoginBloc>(context)
+                            .add(SignInWithGoogleLogOutClickEvent());
+                      },
+                      style:
+                          ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                      child: const Text(
+                        "Logout Google Sign",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )
+                  : ElevatedButton(
+                      onPressed: () {
+                        BlocProvider.of<LoginBloc>(context)
+                            .add(SignInWithGoogleClickEvent());
+                      },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green),
+                      child: const Text(
+                        "SignIn with Google",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
             ],
           ),
         ),

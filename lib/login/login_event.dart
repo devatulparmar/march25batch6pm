@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 @immutable
@@ -10,3 +9,7 @@ class LoginButtonClickEvent extends LoginEvents {
 
   LoginButtonClickEvent(this.email, this.password);
 }
+
+class SignInWithGoogleClickEvent extends LoginEvents {}
+
+class SignInWithGoogleLogOutClickEvent extends LoginEvents {}
