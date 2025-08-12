@@ -6,6 +6,7 @@ import 'package:march25batch6pm/login/login_state.dart';
 import 'package:march25batch6pm/utils/common_snack_bar.dart';
 import 'package:march25batch6pm/utils/const.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -233,6 +234,27 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
+              const SizedBox(height: 20),
+              SignInWithAppleButton(
+                onPressed: () async {
+                  final credential = await SignInWithApple.getAppleIDCredential(
+                    scopes: [
+                      AppleIDAuthorizationScopes.email,
+                      AppleIDAuthorizationScopes.fullName,
+                    ],
+                    webAuthenticationOptions: WebAuthenticationOptions(
+                      clientId:
+                          "484660889068-438omv7b0v17rsc16pb1g0t6krmpefjs.apps.googleusercontent.com",
+                      redirectUri: Uri.parse("signinwithapple://callback"),
+                    ),
+                  );
+
+                  print(credential);
+
+                  // Now send the credential (especially `credential.authorizationCode`) to your server to create a session
+                  // after they have been validated with Apple (see `Integration` section for more information on how to do this)
+                },
+              ),
             ],
           ),
         ),

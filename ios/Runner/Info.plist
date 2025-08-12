@@ -64,5 +64,18 @@
     <string>App wants to access Location</string>
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
     <string>App wants to access Location</string>
+    <key>GIDClientID</key>
+    <string>484660889068-438omv7b0v17rsc16pb1g0t6krmpefjs.apps.googleusercontent.com</string>
+    <key>CFBundleURLTypes</key>
+    <array>
+    	<dict>
+    		<key>CFBundleTypeRole</key>
+    		<string>Editor</string>
+    		<key>CFBundleURLSchemes</key>
+    		<array>
+    		    <string>com.googleusercontent.apps.484660889068-438omv7b0v17rsc16pb1g0t6krmpefjs</string>
+    		</array>
+    	</dict>
+    </array>
 </dict>
 </plist>
