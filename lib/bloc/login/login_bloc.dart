@@ -6,13 +6,13 @@ import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:march25batch6pm/login/login_event.dart';
-import 'package:march25batch6pm/login/login_state.dart';
+import 'package:march25batch6pm/bloc/login/login_event.dart';
+import 'package:march25batch6pm/bloc/login/login_state.dart';
 import 'package:march25batch6pm/repository/api_repository.dart';
 import 'package:march25batch6pm/services/google_sign_in_serviece.dart';
 import 'package:march25batch6pm/utils/common_snack_bar.dart';
+import 'package:march25batch6pm/utils/const.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../utils/const.dart';
 
 class LoginBloc extends Bloc<LoginEvents, LoginStates> {
   LoginBloc() : super(LoginInitState()) {

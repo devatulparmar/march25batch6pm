@@ -1,10 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:march25batch6pm/Stream_builder_screen.dart';
+import 'package:march25batch6pm/bloc/login/login_bloc.dart';
 import 'package:march25batch6pm/bottom_nav_screen.dart';
+import 'package:march25batch6pm/google_maps_screen.dart';
 import 'package:march25batch6pm/home_screen.dart';
 import 'package:march25batch6pm/listview_screen.dart';
 import 'package:march25batch6pm/listview_separated_screen.dart';
-import 'package:march25batch6pm/login/login_bloc.dart';
 import 'package:march25batch6pm/login_screen.dart';
 import 'package:march25batch6pm/register_screen.dart';
 import 'package:march25batch6pm/screen1.dart';
@@ -109,6 +110,9 @@ class MyRoutes {
         break;
       case routeListviewSeparatedScreen:
         widget = const ListviewSeparatedScreen();
+        break;
+      case routeGoogleMapsScreen:
+        widget = const GoogleMapsScreen();
         break;
       case routeLoginScreen:
         widget = BlocProvider<LoginBloc>.value(

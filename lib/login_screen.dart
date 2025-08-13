@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:march25batch6pm/login/login_bloc.dart';
-import 'package:march25batch6pm/login/login_event.dart';
-import 'package:march25batch6pm/login/login_state.dart';
+import 'package:march25batch6pm/bloc/login/login_bloc.dart';
+import 'package:march25batch6pm/bloc/login/login_event.dart';
+import 'package:march25batch6pm/bloc/login/login_state.dart';
 import 'package:march25batch6pm/utils/common_snack_bar.dart';
 import 'package:march25batch6pm/utils/const.dart';
 import 'package:shared_preferences/shared_preferences.dart';

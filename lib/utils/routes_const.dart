@@ -10,3 +10,4 @@ const String routeListviewScreen = "ListviewScreen";
 const String routeListviewSeparatedScreen = "ListviewSeparatedScreen";
 const String routeMyStreamScreen = "MyStreamScreen";
 const String routeStreamBuilderScreen = "StreamBuilderScreen";
+const String routeGoogleMapsScreen = "GoogleMapsScreen";
